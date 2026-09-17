@@ -8,38 +8,45 @@ namespace WinFormsApp
 {
     public partial class Form1 : Form
     {
-        private Logic.Logic logic = new Logic.Logic();
+        Logic.Logic logic = new Logic.Logic();
 
         public Form1()
         {
             InitializeComponent();
+
             comboBoxGender.Items.Add("Не выбран");
             comboBoxGender.Items.Add("Мужской");
             comboBoxGender.Items.Add("Женский");
-
             comboBoxGender.SelectedIndex = 0;
 
             LoadPatients();
         }
-
         private void LoadPatients()
         {
             dataGridViewPatients.Rows.Clear();
 
             List<Patient> patients = logic.GetAllPatients();
 
-            foreach (Patient patient in patients)
+            for (int i = 0; i < patients.Count; i++)
             {
+                string pol = "";
+
+                if (patients[i].Gender == Gender.Male)
+                    pol = "Мужской";
+                else if (patients[i].Gender == Gender.Female)
+                    pol = "Женский";
+                else
+                    pol = "Не выбран";
+
                 dataGridViewPatients.Rows.Add(
-                    patient.Id,
-                    patient.LastName,
-                    patient.FirstName,
-                    patient.Patronymic,
-                    GetGenderName(patient.Gender),
-                    patient.Diagnosis,
-                    patient.Department,
-                    patient.TreatmentStatus
-                );
+                    patients[i].Id,
+                    patients[i].LastName,
+                    patients[i].FirstName,
+                    patients[i].Patronymic,
+                    pol,
+                    patients[i].Diagnosis,
+                    patients[i].Department,
+                    patients[i].TreatmentStatus);
             }
         }
 
@@ -50,35 +57,23 @@ namespace WinFormsApp
             try
             {
                 logic.AddPatient(patient);
-
                 LoadPatients();
                 ClearForm();
-
-                MessageBox.Show(
-                    "Пациент успешно добавлен.",
-                    "Добавление",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MessageBox.Show("Пациент успешно добавлен.");
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, "Ошибка");
             }
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(textBoxId.Text, out int id))
+            int id;
+
+            if (int.TryParse(textBoxId.Text, out id) == false)
             {
-                MessageBox.Show(
-                    "Выберите пациента из таблицы.",
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                MessageBox.Show("Выберите пациента из таблицы.");
                 return;
             }
 
@@ -88,70 +83,48 @@ namespace WinFormsApp
             try
             {
                 logic.UpdatePatient(patient);
-
                 LoadPatients();
                 ClearForm();
-
-                MessageBox.Show(
-                    "Данные пациента изменены.",
-                    "Изменение",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MessageBox.Show("Данные пациента изменены.");
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, "Ошибка");
             }
         }
-
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(textBoxId.Text, out int id))
+            int id;
+
+            if (int.TryParse(textBoxId.Text, out id) == false)
             {
-                MessageBox.Show(
-                    "Выберите пациента из таблицы.",
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                MessageBox.Show("Выберите пациента из таблицы.");
                 return;
             }
 
             DialogResult result = MessageBox.Show(
                 "Удалить выбранного пациента?",
-                "Подтверждение удаления",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+                "Подтверждение",
+                MessageBoxButtons.YesNo);
 
             if (result == DialogResult.Yes)
             {
-                bool deleted = logic.DeletePatient(id);
-
-                if (deleted)
+                if (logic.DeletePatient(id))
                 {
                     LoadPatients();
                     ClearForm();
-
-                    MessageBox.Show(
-                        "Пациент удалён.",
-                        "Удаление",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    MessageBox.Show("Пациент удалён.");
                 }
             }
         }
+
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(textBoxSearch.Text, out int id))
+            int id;
+
+            if (int.TryParse(textBoxSearch.Text, out id) == false)
             {
-                MessageBox.Show(
-                    "Введите корректный номер!",
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                MessageBox.Show("Введите корректный номер!");
                 return;
             }
 
@@ -159,50 +132,34 @@ namespace WinFormsApp
 
             if (patient == null)
             {
-                MessageBox.Show(
-                    "Пациент с таким номером не найден!",
-                    "Поиск",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MessageBox.Show("Пациент с таким номером не найден!");
                 return;
             }
 
             ShowPatientInForm(patient);
         }
-
         private void dataGridViewPatients_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
-            {
                 return;
-            }
 
-            DataGridViewRow row = dataGridViewPatients.Rows[e.RowIndex];
+            textBoxId.Text = dataGridViewPatients.Rows[e.RowIndex].Cells[0].Value.ToString();
+            textBoxLastName.Text = dataGridViewPatients.Rows[e.RowIndex].Cells[1].Value.ToString();
+            textBoxFirstName.Text = dataGridViewPatients.Rows[e.RowIndex].Cells[2].Value.ToString();
+            textBoxPatronymic.Text = dataGridViewPatients.Rows[e.RowIndex].Cells[3].Value.ToString();
+            textBoxDiagnosis.Text = dataGridViewPatients.Rows[e.RowIndex].Cells[5].Value.ToString();
+            textBoxDepartment.Text = dataGridViewPatients.Rows[e.RowIndex].Cells[6].Value.ToString();
+            textBoxTreatmentStatus.Text = dataGridViewPatients.Rows[e.RowIndex].Cells[7].Value.ToString();
 
-            textBoxId.Text = row.Cells[0].Value?.ToString();
-            textBoxLastName.Text = row.Cells[1].Value?.ToString();
-            textBoxFirstName.Text = row.Cells[2].Value?.ToString();
-            textBoxPatronymic.Text = row.Cells[3].Value?.ToString();
-            textBoxDiagnosis.Text = row.Cells[5].Value?.ToString();
-            textBoxDepartment.Text = row.Cells[6].Value?.ToString();
-            textBoxTreatmentStatus.Text = row.Cells[7].Value?.ToString();
+            string pol = dataGridViewPatients.Rows[e.RowIndex].Cells[4].Value.ToString();
 
-            string gender = row.Cells[4].Value?.ToString();
-
-            if (gender == "Мужской")
-            {
+            if (pol == "Мужской")
                 comboBoxGender.SelectedIndex = 1;
-            }
-            else if (gender == "Женский")
-            {
+            else if (pol == "Женский")
                 comboBoxGender.SelectedIndex = 2;
-            }
             else
-            {
                 comboBoxGender.SelectedIndex = 0;
-            }
         }
-
         private void buttonGroupDiagnosis_Click(object sender, EventArgs e)
         {
             Dictionary<string, List<Patient>> groups = logic.GroupByDiagnosis();
@@ -213,89 +170,66 @@ namespace WinFormsApp
                 return;
             }
 
-            string result = "Пациенты по диагнозам:\n\n";
+            string text = "Пациенты по диагнозам:\n\n";
 
-            foreach (var group in groups)
+            foreach (var g in groups)
             {
-                result += "Диагноз: " + group.Key + "\n";
+                text = text + "Диагноз: " + g.Key + "\n";
 
-                foreach (Patient patient in group.Value)
+                foreach (Patient p in g.Value)
                 {
-                    result += "  - " +
-                              patient.LastName + " " +
-                              patient.FirstName +
-                              " (Id: " + patient.Id + ")\n";
+                    text = text + "  - " + p.LastName + " " + p.FirstName + " (Id: " + p.Id + ")\n";
                 }
 
-                result += "\n";
+                text = text + "\n";
             }
 
-            MessageBox.Show(
-                result,
-                "Группировка по диагнозу",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            MessageBox.Show(text, "Группировка по диагнозу");
         }
 
         private void buttonCountDepartment_Click(object sender, EventArgs e)
         {
-            Dictionary<string, int> departments = logic.CountPatientsByDepartment();
+            Dictionary<string, int> deps = logic.CountPatientsByDepartment();
 
-            if (departments.Count == 0)
+            if (deps.Count == 0)
             {
                 MessageBox.Show("Список пациентов пуст.");
                 return;
             }
 
-            string result = "Количество пациентов по отделениям:\n\n";
+            string text = "Количество пациентов по отделениям:\n\n";
 
-            foreach (var department in departments)
+            foreach (var d in deps)
             {
-                result += department.Key +
-                          ": " +
-                          department.Value +
-                          "\n";
+                text = text + d.Key + ": " + d.Value + "\n";
             }
 
-            MessageBox.Show(
-                result,
-                "Пациенты по отделениям",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            MessageBox.Show(text, "Пациенты по отделениям");
         }
-
         private void buttonClear_Click(object sender, EventArgs e)
         {
             ClearForm();
         }
-
         private Patient GetPatientFromForm()
         {
             Patient patient = new Patient();
 
-            patient.FirstName = textBoxFirstName.Text.Trim();
-            patient.LastName = textBoxLastName.Text.Trim();
-            patient.Patronymic = textBoxPatronymic.Text.Trim();
-            patient.Diagnosis = textBoxDiagnosis.Text.Trim();
-            patient.Department = textBoxDepartment.Text.Trim();
-            patient.TreatmentStatus = textBoxTreatmentStatus.Text.Trim();
+            patient.FirstName = textBoxFirstName.Text;
+            patient.LastName = textBoxLastName.Text;
+            patient.Patronymic = textBoxPatronymic.Text;
+            patient.Diagnosis = textBoxDiagnosis.Text;
+            patient.Department = textBoxDepartment.Text;
+            patient.TreatmentStatus = textBoxTreatmentStatus.Text;
 
             if (comboBoxGender.SelectedIndex == 1)
-            {
                 patient.Gender = Gender.Male;
-            }
             else if (comboBoxGender.SelectedIndex == 2)
-            {
                 patient.Gender = Gender.Female;
-            }
             else
-            {
                 patient.Gender = Gender.NotSelected;
-            }
 
             return patient;
         }
-
         private void ShowPatientInForm(Patient patient)
         {
             textBoxId.Text = patient.Id.ToString();
@@ -307,47 +241,26 @@ namespace WinFormsApp
             textBoxTreatmentStatus.Text = patient.TreatmentStatus;
 
             if (patient.Gender == Gender.Male)
-            {
                 comboBoxGender.SelectedIndex = 1;
-            }
             else if (patient.Gender == Gender.Female)
-            {
                 comboBoxGender.SelectedIndex = 2;
-            }
             else
-            {
                 comboBoxGender.SelectedIndex = 0;
-            }
         }
-
         private void ClearForm()
         {
-            textBoxId.Clear();
-            textBoxFirstName.Clear();
-            textBoxLastName.Clear();
-            textBoxPatronymic.Clear();
-            textBoxDiagnosis.Clear();
-            textBoxDepartment.Clear();
-            textBoxTreatmentStatus.Clear();
+            textBoxId.Text = "";
+            textBoxFirstName.Text = "";
+            textBoxLastName.Text = "";
+            textBoxPatronymic.Text = "";
+            textBoxDiagnosis.Text = "";
+            textBoxDepartment.Text = "";
+            textBoxTreatmentStatus.Text = "";
 
             comboBoxGender.SelectedIndex = 0;
 
             textBoxFirstName.Focus();
         }
 
-        private string GetGenderName(Gender gender)
-        {
-            switch (gender)
-            {
-                case Gender.Male:
-                    return "Мужской";
-
-                case Gender.Female:
-                    return "Женский";
-
-                default:
-                    return "Не выбран";
-            }
-        }
     }
 }

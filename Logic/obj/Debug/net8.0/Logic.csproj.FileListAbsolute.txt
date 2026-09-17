@@ -13,3 +13,4 @@ C:\Users\Ирочка\source\repos\SystemForPatients\Logic\obj\Debug\net8.0\Logi
 C:\Users\Ирочка\source\repos\SystemForPatients\Logic\obj\Debug\net8.0\refint\Logic.dll
 C:\Users\Ирочка\source\repos\SystemForPatients\Logic\obj\Debug\net8.0\Logic.pdb
 C:\Users\Ирочка\source\repos\SystemForPatients\Logic\obj\Debug\net8.0\ref\Logic.dll
+C:\Users\Ирочка\source\repos\SystemForPatients\Logic\obj\Debug\net8.0\Logic.sourcelink.json

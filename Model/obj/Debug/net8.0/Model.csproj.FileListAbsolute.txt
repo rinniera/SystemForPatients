@@ -9,3 +9,4 @@ C:\Users\Ирочка\source\repos\SystemForPatients\Model\obj\Debug\net8.0\Mode
 C:\Users\Ирочка\source\repos\SystemForPatients\Model\obj\Debug\net8.0\refint\Model.dll
 C:\Users\Ирочка\source\repos\SystemForPatients\Model\obj\Debug\net8.0\Model.pdb
 C:\Users\Ирочка\source\repos\SystemForPatients\Model\obj\Debug\net8.0\ref\Model.dll
+C:\Users\Ирочка\source\repos\SystemForPatients\Model\obj\Debug\net8.0\Model.sourcelink.json

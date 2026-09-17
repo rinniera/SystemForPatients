@@ -5,6 +5,7 @@ using Model;
 
 namespace ConsoleApp
 {
+    //комментарий для теста что всё работает
     public class Program
     {
         static void Main()
@@ -34,43 +35,41 @@ namespace ConsoleApp
 
                 Console.Clear();
 
-                switch (choice)
+                if (choice == "1")
                 {
-                    case "1":
-                        ShowAllPatients(logic);
-                        break;
-
-                    case "2":
-                        AddPatient(logic);
-                        break;
-
-                    case "3":
-                        FindPatient(logic);
-                        break;
-
-                    case "4":
-                        UpdatePatient(logic);
-                        break;
-
-                    case "5":
-                        DeletePatient(logic);
-                        break;
-
-                    case "6":
-                        GroupPatientsByDiagnosis(logic);
-                        break;
-
-                    case "7":
-                        CountPatientsByDepartment(logic);
-                        break;
-
-                    case "0":
-                        start = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Такого пункта меню нет.");
-                        break;
+                    ShowAllPatients(logic);
+                }
+                else if (choice == "2")
+                {
+                    AddPatient(logic);
+                }
+                else if (choice == "3")
+                {
+                    FindPatient(logic);
+                }
+                else if (choice == "4")
+                {
+                    UpdatePatient(logic);
+                }
+                else if (choice == "5")
+                {
+                    DeletePatient(logic);
+                }
+                else if (choice == "6")
+                {
+                    GroupPatientsByDiagnosis(logic);
+                }
+                else if (choice == "7")
+                {
+                    CountPatientsByDepartment(logic);
+                }
+                else if (choice == "0")
+                {
+                    start = false;
+                }
+                else
+                {
+                    Console.WriteLine("Такого пункта меню нет.");
                 }
 
                 if (start)
@@ -81,6 +80,7 @@ namespace ConsoleApp
                 }
             }
         }
+
         static void AddPatient(Logic.Logic logic)
         {
             Console.WriteLine("Добавить нового пациента: ");
@@ -134,8 +134,7 @@ namespace ConsoleApp
                 logic.AddPatient(patient);
 
                 Console.WriteLine();
-                Console.WriteLine(
-                    "Пациент добавлен. Его номер в списке: " + patient.Id);
+                Console.WriteLine("Пациент добавлен. Его номер: " + patient.Id);
             }
             catch (ArgumentException ex)
             {
@@ -143,7 +142,6 @@ namespace ConsoleApp
                 Console.WriteLine("Ошибка: " + ex.Message);
             }
         }
-
         static void ShowAllPatients(Logic.Logic logic)
         {
             Console.WriteLine("Список пациентов: ");
@@ -157,20 +155,23 @@ namespace ConsoleApp
                 return;
             }
 
-            foreach (Patient patient in patients)
+            for (int i = 0; i < patients.Count; i++)
             {
-                ShowPatient(patient);
+                ShowPatient(patients[i]);
             }
         }
-
         static void FindPatient(Logic.Logic logic)
         {
             Console.WriteLine("Поиск пациента в системе:");
             Console.WriteLine();
 
             Console.Write("Введите номер пациента: ");
+            string input = Console.ReadLine();
 
-            if (!int.TryParse(Console.ReadLine(), out int id))
+            int id = 0;
+            bool ok = int.TryParse(input, out id);
+
+            if (ok == false)
             {
                 Console.WriteLine("Номер должен быть числом!");
                 return;
@@ -194,8 +195,12 @@ namespace ConsoleApp
             Console.WriteLine();
 
             Console.Write("Введите номер пациента: ");
+            string input = Console.ReadLine();
 
-            if (!int.TryParse(Console.ReadLine(), out int id))
+            int id = 0;
+            bool ok = int.TryParse(input, out id);
+
+            if (ok == false)
             {
                 Console.WriteLine("Номер должен быть числом!");
                 return;
@@ -214,48 +219,46 @@ namespace ConsoleApp
             ShowPatient(existingPatient);
 
             Console.WriteLine();
-            Console.WriteLine("Введите новые данные (нажмите клавишу Enter, чтобы оставить поля без изменений).");
+            Console.WriteLine("Введите новые данные (Enter - оставить как было).");
             Console.WriteLine();
 
-            Patient updatedPatient = new Patient
-            {
-                Id = existingPatient.Id,
-                FirstName = existingPatient.FirstName,
-                LastName = existingPatient.LastName,
-                Patronymic = existingPatient.Patronymic,
-                Gender = existingPatient.Gender,
-                Diagnosis = existingPatient.Diagnosis,
-                Department = existingPatient.Department,
-                TreatmentStatus = existingPatient.TreatmentStatus
-            };
+            Patient updatedPatient = new Patient();
+            updatedPatient.Id = existingPatient.Id;
+            updatedPatient.FirstName = existingPatient.FirstName;
+            updatedPatient.LastName = existingPatient.LastName;
+            updatedPatient.Patronymic = existingPatient.Patronymic;
+            updatedPatient.Gender = existingPatient.Gender;
+            updatedPatient.Diagnosis = existingPatient.Diagnosis;
+            updatedPatient.Department = existingPatient.Department;
+            updatedPatient.TreatmentStatus = existingPatient.TreatmentStatus;
 
-            Console.Write($"Имя ({existingPatient.FirstName}): ");
-            string input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input))
+            Console.Write("Имя (" + existingPatient.FirstName + "): ");
+            input = Console.ReadLine();
+            if (input != "")
             {
                 updatedPatient.FirstName = input;
             }
 
-            Console.Write($"Фамилия ({existingPatient.LastName}): ");
+            Console.Write("Фамилия (" + existingPatient.LastName + "): ");
             input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input))
+            if (input != "")
             {
                 updatedPatient.LastName = input;
             }
 
-            Console.Write($"Отчество ({existingPatient.Patronymic}): ");
+            Console.Write("Отчество (" + existingPatient.Patronymic + "): ");
             input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input))
+            if (input != "")
             {
                 updatedPatient.Patronymic = input;
             }
 
             Console.WriteLine();
-            Console.WriteLine($"Текущий пол: {GetGenderName(existingPatient.Gender)}");
+            Console.WriteLine("Текущий пол: " + GetGenderName(existingPatient.Gender));
             Console.WriteLine("Выберите пол:");
             Console.WriteLine("1. Мужской");
             Console.WriteLine("2. Женский");
-            Console.Write("Ваш выбор (нажмите клавишу Enter, чтобы оставить поле без изменений): ");
+            Console.Write("Ваш выбор (Enter - не менять): ");
 
             string genderChoice = Console.ReadLine();
 
@@ -270,23 +273,23 @@ namespace ConsoleApp
 
             Console.WriteLine();
 
-            Console.Write($"Диагноз ({existingPatient.Diagnosis}): ");
+            Console.Write("Диагноз (" + existingPatient.Diagnosis + "): ");
             input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input))
+            if (input != "")
             {
                 updatedPatient.Diagnosis = input;
             }
 
-            Console.Write($"Отделение ({existingPatient.Department}): ");
+            Console.Write("Отделение (" + existingPatient.Department + "): ");
             input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input))
+            if (input != "")
             {
                 updatedPatient.Department = input;
             }
 
-            Console.Write($"Статус лечения ({existingPatient.TreatmentStatus}): ");
+            Console.Write("Статус лечения (" + existingPatient.TreatmentStatus + "): ");
             input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input))
+            if (input != "")
             {
                 updatedPatient.TreatmentStatus = input;
             }
@@ -311,8 +314,12 @@ namespace ConsoleApp
             Console.WriteLine();
 
             Console.Write("Введите номер пациента: ");
+            string input = Console.ReadLine();
 
-            if (!int.TryParse(Console.ReadLine(), out int id))
+            int id = 0;
+            bool ok = int.TryParse(input, out id);
+
+            if (ok == false)
             {
                 Console.WriteLine("Номер должен быть числом!");
                 return;
@@ -334,11 +341,9 @@ namespace ConsoleApp
 
             string answer = Console.ReadLine();
 
-            if (answer.ToLower() == "да")
+            if (answer == "да")
             {
-                bool deleted = logic.DeletePatient(id);
-
-                if (deleted)
+                if (logic.DeletePatient(id))
                 {
                     Console.WriteLine("Пациент удалён.");
                 }
@@ -348,14 +353,12 @@ namespace ConsoleApp
                 Console.WriteLine("Удаление отменено.");
             }
         }
-
         static void GroupPatientsByDiagnosis(Logic.Logic logic)
         {
             Console.WriteLine("Количество пациентов с диагнозами:");
             Console.WriteLine();
 
-            Dictionary<string, List<Patient>> groups =
-                logic.GroupByDiagnosis();
+            Dictionary<string, List<Patient>> groups = logic.GroupByDiagnosis();
 
             if (groups.Count == 0)
             {
@@ -363,72 +366,61 @@ namespace ConsoleApp
                 return;
             }
 
-            foreach (var group in groups)
+            foreach (var g in groups)
             {
-                Console.WriteLine("Диагноз: " + group.Key);
+                Console.WriteLine("Диагноз: " + g.Key);
 
-                foreach (Patient patient in group.Value)
+                foreach (Patient p in g.Value)
                 {
-                    Console.WriteLine(
-                        "  " +
-                        patient.LastName + " " +
-                        patient.FirstName + " " +
-                        patient.Patronymic +
-                        " (Id: " + patient.Id + ")");
+                    Console.WriteLine("  " + p.LastName + " " + p.FirstName + " " + p.Patronymic + " (Id: " + p.Id + ")");
                 }
 
                 Console.WriteLine();
             }
         }
-
         static void CountPatientsByDepartment(Logic.Logic logic)
         {
             Console.WriteLine("Количество пациентов в отделениях:");
             Console.WriteLine();
 
-            Dictionary<string, int> departments =
-                logic.CountPatientsByDepartment();
+            Dictionary<string, int> deps = logic.CountPatientsByDepartment();
 
-            if (departments.Count == 0)
+            if (deps.Count == 0)
             {
                 Console.WriteLine("Список пациентов пуст!");
                 return;
             }
 
-            foreach (var department in departments)
+            foreach (var d in deps)
             {
-                Console.WriteLine(
-                    department.Key + ": " +
-                    department.Value + " пациент(ов)");
+                Console.WriteLine(d.Key + ": " + d.Value + " пациент(ов)");
             }
         }
 
         static void ShowPatient(Patient patient)
         {
             Console.WriteLine("Номер: " + patient.Id);
-            Console.WriteLine(
-                "ФИО: " +
-                patient.LastName + " " +
-                patient.FirstName + " " +
-                patient.Patronymic);
+            Console.WriteLine("ФИО: " + patient.LastName + " " + patient.FirstName + " " + patient.Patronymic);
             Console.WriteLine("Пол: " + GetGenderName(patient.Gender));
             Console.WriteLine("Диагноз: " + patient.Diagnosis);
             Console.WriteLine("Отделение: " + patient.Department);
             Console.WriteLine("Статус лечения: " + patient.TreatmentStatus);
             Console.WriteLine();
         }
+
         static string GetGenderName(Gender gender)
         {
-            switch (gender)
+            if (gender == Gender.Male)
             {
-                case Gender.Male:
-                    return "Мужской";
-
-                case Gender.Female:
-                    return "Женский";
-
-                default:
-                    return "Не указан";
+                return "Мужской";
+            }
+            else if (gender == Gender.Female)
+            {
+                return "Женский";
+            }
+            else
+            {
+                return "Не указан";
             }
         }
     }
