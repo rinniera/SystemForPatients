@@ -5,7 +5,7 @@ using Model;
 
 namespace ConsoleApp
 {
-    //комментарий для теста что всё работает
+   // я устал хочу любви
     public class Program
     {
         static void Main()
