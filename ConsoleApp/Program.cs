@@ -5,7 +5,7 @@ using Model;
 
 namespace ConsoleApp
 {
-   // я устал хочу любви
+   
     public class Program
     {
         static void Main()
@@ -192,9 +192,23 @@ namespace ConsoleApp
         static void UpdatePatient(Logic.Logic logic)
         {
             Console.WriteLine("Изменение данных о пациенте:");
+            Console.WriteLine("Список пациентов:");
             Console.WriteLine();
 
-            Console.Write("Введите номер пациента: ");
+            List<Patient> patients = logic.GetAllPatients();
+
+            if (patients.Count == 0)
+            {
+                Console.WriteLine("Список пациентов пуст!");
+                return;
+            }
+
+            for (int i = 0; i < patients.Count; i++)
+            {
+                ShowPatient(patients[i]);
+            }
+
+            Console.Write("Введите номер пациента, данные которого хотите изменить: ");
             string input = Console.ReadLine();
 
             int id = 0;
@@ -310,10 +324,27 @@ namespace ConsoleApp
 
         static void DeletePatient(Logic.Logic logic)
         {
+
             Console.WriteLine("Удаление пациента из системы:");
+            Console.WriteLine("Список пациентов:");
             Console.WriteLine();
 
-            Console.Write("Введите номер пациента: ");
+            List<Patient> patients = logic.GetAllPatients();
+
+            if (patients.Count == 0)
+            {
+                Console.WriteLine("Список пациентов пуст!");
+                return;
+            }
+
+            for (int i = 0; i < patients.Count; i++)
+            {
+                ShowPatient(patients[i]);
+            }
+
+            Console.WriteLine();
+
+            Console.Write("Введите номер пациента, которого хотите удалить: ");
             string input = Console.ReadLine();
 
             int id = 0;
@@ -341,7 +372,7 @@ namespace ConsoleApp
 
             string answer = Console.ReadLine();
 
-            if (answer == "да")
+            if (answer == "да" || answer == "Да")
             {
                 if (logic.DeletePatient(id))
                 {

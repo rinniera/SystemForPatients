@@ -106,7 +106,7 @@ namespace Logic
         /// метод для проверки введённых символов в строке. должна содержать буквы, дефис и пробел.
         /// </summary>
         /// <param name="value"> введённая строка </param>
-        /// <return> возвращает введённое значение </return>
+        /// <return> возвращает true, если введённое значение содержит допустимые символы, иначе false</return>
 
         private static bool IsNameValid(string value)
         {
@@ -117,7 +117,7 @@ namespace Logic
         /// функция для проверки введённых символов в строке. должна содержать буквы, цифры, дефис и пробел.
         /// </summary>
         /// <param name="value"> введённая строка </param>
-        /// <return> возвращает введённое значение </return>
+        /// <return> возвращает true, если введённое значение содержит допустимые символы, иначе false</return>
         private static bool IsTextValid(string value)
         {
             return value.All(
@@ -127,8 +127,8 @@ namespace Logic
         ///<summary>
         /// метод для вывода данных о пациенте. 
         /// </summary>
-        /// <param name="id"> введённое число </param>
-        /// <return> возвращает объект соответствующий полученному id </return>
+        /// <param name="id"> id пациента </param>
+        /// <return> возвращает объект соответствующий полученному id или null, если он не был найден </return>
         public Patient GetPatient(int id)
         {
             return patients.FirstOrDefault(p => p.Id == id);
@@ -146,7 +146,7 @@ namespace Logic
         ///<summary>
         /// метод для обновления данных о пациенте
         /// </summary>
-        /// <param name="patient"> объект пациента </param>
+        /// <param name="patient"> объект пациента с обновлёнными данными </param>
         public void UpdatePatient(Patient patient)
         {
             if (patient == null)
@@ -176,7 +176,7 @@ namespace Logic
         /// метод удаления пациента из списка
         /// </summary>
         /// <param name="id"> объект введённый id </param>
-        /// <return> если id не был получен, метод не будет выполнен. в ином случае будет выполнен. </return>
+        /// <return> если id не был получен, метод возвращает false. в ином случае вернёт true. </return>
         public bool DeletePatient(int id)
         {
             Patient patient = GetPatient(id);
@@ -193,7 +193,7 @@ namespace Logic
         ///<summary>
         /// метод для группировки пациентов по диагнозу. ключ - диагноз, значение - пациенты с этим диагнозом.
         /// </summary>
-        /// <return> возвращает список с группированными данными </return>
+        /// <return> возвращает словарь с группированными данными. </return>
         public Dictionary<string, List<Patient>> GroupByDiagnosis()
         {
             return patients
@@ -207,7 +207,7 @@ namespace Logic
         ///<summary>
         /// метод для подсчётов пациентов в отделении. ключ - название отделения, значение - количество пациентов.
         /// </summary>
-        /// <return> возвращает список с группированными данными </return>
+        /// <return> возвращает словарь с группированными данными </return>
         public Dictionary<string, int> CountPatientsByDepartment()
         {
             return patients
