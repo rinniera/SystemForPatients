@@ -170,21 +170,18 @@ namespace WinFormsApp
                 return;
             }
 
-            string text = "Пациенты по диагнозам:\n\n";
+            FormeMes reportForm = new FormeMes();
+            reportForm.SetupGrid("Группировка по диагнозу", new string[] { "Диагноз", "ID", "Фамилия", "Имя" });
 
             foreach (var g in groups)
             {
-                text = text + "Диагноз: " + g.Key + "\n";
-
                 foreach (Patient p in g.Value)
                 {
-                    text = text + "  - " + p.LastName + " " + p.FirstName + " (Id: " + p.Id + ")\n";
+                    reportForm.AddRow(g.Key, p.Id, p.LastName, p.FirstName);
                 }
-
-                text = text + "\n";
             }
 
-            MessageBox.Show(text, "Группировка по диагнозу");
+            reportForm.ShowDialog();
         }
 
         private void buttonCountDepartment_Click(object sender, EventArgs e)
@@ -197,14 +194,15 @@ namespace WinFormsApp
                 return;
             }
 
-            string text = "Количество пациентов по отделениям:\n\n";
+            FormeMes reportForm = new FormeMes();
+            reportForm.SetupGrid("Пациенты по отделениям", new string[] { "Отделение", "Количество пациентов" });
 
             foreach (var d in deps)
             {
-                text = text + d.Key + ": " + d.Value + "\n";
+                reportForm.AddRow(d.Key, d.Value);
             }
 
-            MessageBox.Show(text, "Пациенты по отделениям");
+            reportForm.ShowDialog();
         }
         private void buttonClear_Click(object sender, EventArgs e)
         {
