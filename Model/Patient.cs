@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class Patient
+    public interface IDomainObject
+    {
+        int Id { get; set; }
+    }
+    public class Patient: IDomainObject
     {
         public int Id { get; set; }
 
