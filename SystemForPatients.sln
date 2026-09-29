@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp", "WinFormsApp\WinFormsApp.csproj", "{4FF554B0-3D00-4D51-B79B-0719E008F7DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{030FD4B8-9611-4FA6-A5D1-1214B8078D08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4FF554B0-3D00-4D51-B79B-0719E008F7DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FF554B0-3D00-4D51-B79B-0719E008F7DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FF554B0-3D00-4D51-B79B-0719E008F7DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{030FD4B8-9611-4FA6-A5D1-1214B8078D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{030FD4B8-9611-4FA6-A5D1-1214B8078D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{030FD4B8-9611-4FA6-A5D1-1214B8078D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{030FD4B8-9611-4FA6-A5D1-1214B8078D08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
