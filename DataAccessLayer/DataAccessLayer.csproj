@@ -63,6 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DapperRepository.cs" />
+    <Compile Include="EntityRepository.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="PatientContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
