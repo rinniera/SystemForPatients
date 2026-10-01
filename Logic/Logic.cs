@@ -9,6 +9,8 @@ namespace Logic
 {
     public class Logic
     {
+        //IRepository<project> repository = new EntityProjectRepository();
+
         private List<Patient> patients = new List<Patient>();
 
         private int nextId = 1;

@@ -44,3 +44,4 @@ C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\WinFormsApp\obj\De
 C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\WinFormsApp\obj\Debug\net8.0-windows\WinFormsApp.pdb
 C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\WinFormsApp\obj\Debug\net8.0-windows\WinFormsApp.genruntimeconfig.cache
 C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\WinFormsApp\obj\Debug\net8.0-windows\ref\WinFormsApp.dll
+C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\WinFormsApp\obj\Debug\net8.0-windows\WinFormsApp.FormeMes.resources
