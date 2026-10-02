@@ -12,8 +12,6 @@ namespace DataAccessLayer
 
     {
         void Create(T obj);
-
-        //void Add(T obj);
         IEnumerable<T> ReadAll();
         T ReadById(int id);
         void Update(T obj);
