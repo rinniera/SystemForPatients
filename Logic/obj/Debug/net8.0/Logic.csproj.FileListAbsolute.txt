@@ -30,3 +30,7 @@ C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\obj\Debug\ne
 C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\obj\Debug\net8.0\refint\Logic.dll
 C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\obj\Debug\net8.0\Logic.pdb
 C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\obj\Debug\net8.0\ref\Logic.dll
+C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\bin\Debug\net8.0\Logic.runtimeconfig.json
+C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\bin\Debug\net8.0\DataAccessLayer.dll
+C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\bin\Debug\net8.0\DataAccessLayer.pdb
+C:\Users\Ирочка\source\repos\rinniera\SystemForPatients\Logic\obj\Debug\net8.0\Logic.genruntimeconfig.cache

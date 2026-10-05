@@ -1,3 +1,4 @@
+using DataAccessLayer;
 using Logic;
 using Model;
 using System;
@@ -8,11 +9,16 @@ namespace WinFormsApp
 {
     public partial class Form1 : Form
     {
-        Logic.Logic logic = new Logic.Logic();
+        private readonly IRepository<Patient> repository;
+        private readonly Logic.Logic logic;
+
 
         public Form1()
         {
             InitializeComponent();
+
+            repository = new EntityRepository<Patient>(); 
+            logic = new Logic.Logic(repository);
 
             comboBoxGender.Items.Add("Не выбран");
             comboBoxGender.Items.Add("Мужской");

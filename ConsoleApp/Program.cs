@@ -1,16 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DataAccessLayer;
 using Logic;
 using Model;
+using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
-   
+
     public class Program
     {
         static void Main()
         {
-            Logic.Logic logic = new Logic.Logic();
+            using (var ctx = new PatientDBContext())
+            {
+                ctx.Database.EnsureCreated();
+            }
+
+            IRepository<Patient> repository = new DapperRepository<Patient>();
+
+            var logic = new Logic.Logic(repository);
 
             bool start = true;
 
