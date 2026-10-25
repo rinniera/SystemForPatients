@@ -1,6 +1,7 @@
 using DataAccessLayer;
 using Logic;
 using Model;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -15,10 +16,10 @@ namespace WinFormsApp
 
         public Form1()
         {
-            InitializeComponent();
+            IKernel kernel = new StandardKernel(new SimpleConfigModule());
 
-            repository = new EntityRepository<Patient>(); 
-            logic = new Logic.Logic(repository);
+            InitializeComponent();
+            logic = kernel.Get<Logic.Logic>();
 
             comboBoxGender.Items.Add("Не выбран");
             comboBoxGender.Items.Add("Мужской");

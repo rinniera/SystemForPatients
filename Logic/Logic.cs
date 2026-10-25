@@ -6,112 +6,74 @@ using Model;
 
 namespace Logic
 {
+    /// <summary>
+    /// Класс бизнес-логики для управления данными пациентов.
+    /// </summary>
     public class Logic
     {
         private readonly IRepository<Patient> _repository;
+        private readonly Validator _validator;
 
+        public IRepository<Patient> Repository { get; set; }
+
+        // Конструктор, принимающий абстракцию
         public Logic(IRepository<Patient> repository)
         {
-            _repository = repository;
+            Repository = repository;
+        }
+        /// <summary>
+        /// Инициализирует новый экземпляр класса бизнес-логики.
+        /// </summary>
+        /// <param name="repository">Репозиторий для доступа к данным.</param>
+        /// <param name="validator">Валидатор для проверки корректности данных.</param>
+        public Logic(IRepository<Patient> repository, Validator validator)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _validator = validator ?? throw new ArgumentNullException(nameof(validator));
         }
 
-        ///<summary>
-        /// метод для добавления пациента
+        /// <summary>
+        /// Добавляет нового пациента в базу данных после успешной валидации.
         /// </summary>
-        /// <param name="patient">объект пациента</param>
+        /// <param name="patient">Объект пациента.</param>
         public void AddPatient(Patient patient)
         {
-            if (patient == null)
-            {
-                throw new ArgumentNullException(nameof(patient));
-            }
-
-            ValidatePatient(patient);
+            _validator.Validate(patient);
             _repository.Create(patient);
         }
 
-        ///<summary>
-        /// метод для проверки введённых данных о пациенте
+        /// <summary>
+        /// Возвращает данные о пациенте по его идентификатору.
         /// </summary>
-        /// <param name="patient">объект пациента</param>
-        private void ValidatePatient(Patient patient)
-        {
-            if (string.IsNullOrWhiteSpace(patient.FirstName))
-                throw new ArgumentException("Имя пациента не может быть пустым!");
-
-            if (!IsNameValid(patient.FirstName))
-                throw new ArgumentException("Имя пациента содержит недопустимые символы!");
-
-            if (string.IsNullOrWhiteSpace(patient.LastName))
-                throw new ArgumentException("Фамилия пациента не может быть пустой!");
-
-            if (!IsNameValid(patient.LastName))
-                throw new ArgumentException("Фамилия пациента содержит недопустимые символы!");
-
-            if (!string.IsNullOrWhiteSpace(patient.Patronymic) &&
-                !IsNameValid(patient.Patronymic))
-                throw new ArgumentException("Отчество содержит недопустимые символы!");
-
-            if (patient.Gender == Gender.NotSelected)
-                throw new ArgumentException("Необходимо указать пол пациента!");
-
-            if (string.IsNullOrWhiteSpace(patient.Diagnosis))
-                throw new ArgumentException("Диагноз не может быть пустым!");
-
-            if (!IsTextValid(patient.Diagnosis))
-                throw new ArgumentException("Диагноз содержит недопустимые символы!");
-
-            if (string.IsNullOrWhiteSpace(patient.Department))
-                throw new ArgumentException("Отделение не может быть пустым!");
-
-            if (!IsTextValid(patient.Department))
-                throw new ArgumentException("Отделение содержит недопустимые символы!");
-
-            if (string.IsNullOrWhiteSpace(patient.TreatmentStatus))
-                throw new ArgumentException("Статус лечения не может быть пустым!");
-
-            if (!IsTextValid(patient.TreatmentStatus))
-                throw new ArgumentException("Статус лечения содержит недопустимые символы!");
-        }
-
-        private static bool IsNameValid(string value)
-            => value.All(c => char.IsLetter(c) || c == '-' || c == ' ');
-
-        private static bool IsTextValid(string value)
-            => value.All(c => char.IsLetterOrDigit(c) || c == '-' || c == ' ');
-
-        ///<summary>
-        /// метод для вывода данных о пациенте
-        /// </summary>
-        /// <param name="id">id пациента</param>
-        /// <return>объект или null</return>
+        /// <param name="id">Идентификатор пациента.</param>
+        /// <returns>Объект пациента или null, если пациент не найден.</returns>
         public Patient GetPatient(int id)
         {
             return _repository.ReadById(id);
         }
 
-        ///<summary>
-        /// метод для вывода всех пациентов
+        /// <summary>
+        /// Возвращает список всех пациентов.
         /// </summary>
+        /// <returns>Список объектов пациентов.</returns>
         public List<Patient> GetAllPatients()
         {
             return _repository.ReadAll().ToList();
         }
 
-        ///<summary>
-        /// метод для обновления данных о пациенте
+        /// <summary>
+        /// Обновляет данные существующего пациента.
         /// </summary>
-        /// <param name="patient">объект пациента с обновлёнными данными</param>
+        /// <param name="patient">Объект пациента с обновленными данными.</param>
         public void UpdatePatient(Patient patient)
         {
-            if (patient == null)
-                throw new ArgumentNullException(nameof(patient));
-
-            ValidatePatient(patient);
+            _validator.Validate(patient);
 
             Patient existing = _repository.ReadById(patient.Id);
             if (existing == null)
-                throw new ArgumentException("Пациент с указанным номером не найден.");
+            {
+                throw new ArgumentException($"Пациент с идентификатором {patient.Id} не найден.");
+            }
 
             // Обновляем поля существующей сущности
             existing.FirstName = patient.FirstName;
@@ -125,24 +87,27 @@ namespace Logic
             _repository.Update(existing);
         }
 
-        ///<summary>
-        /// метод удаления пациента
+        /// <summary>
+        /// Удаляет пациента из базы данных по его идентификатору.
         /// </summary>
-        /// <param name="id">id пациента</param>
-        /// <return>true, если удалено</return>
+        /// <param name="id">Идентификатор пациента.</param>
+        /// <returns>True, если удаление прошло успешно; иначе False.</returns>
         public bool DeletePatient(int id)
         {
             Patient patient = _repository.ReadById(id);
             if (patient == null)
+            {
                 return false;
+            }
 
             _repository.Delete(patient);
             return true;
         }
 
-        ///<summary>
-        /// группировка пациентов по диагнозу
+        /// <summary>
+        /// Группирует пациентов по их диагнозам.
         /// </summary>
+        /// <returns>Словарь, где ключ - диагноз, а значение - список пациентов.</returns>
         public Dictionary<string, List<Patient>> GroupByDiagnosis()
         {
             return _repository.ReadAll()
@@ -150,9 +115,10 @@ namespace Logic
                 .ToDictionary(g => g.Key, g => g.ToList());
         }
 
-        ///<summary>
-        /// подсчёт пациентов в отделении
+        /// <summary>
+        /// Подсчитывает количество пациентов в каждом отделении.
         /// </summary>
+        /// <returns>Словарь, где ключ - название отделения, а значение - количество пациентов.</returns>
         public Dictionary<string, int> CountPatientsByDepartment()
         {
             return _repository.ReadAll()

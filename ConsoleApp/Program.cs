@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer;
 using Logic;
 using Model;
+using Ninject;
 using System;
 using System.Collections.Generic;
 
@@ -11,14 +12,14 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            using (var ctx = new PatientDBContext())
+            IKernel kernel = new StandardKernel(new SimpleConfigModule());
+
+            using (var ctx = kernel.Get<PatientDBContext>())
             {
                 ctx.Database.EnsureCreated();
             }
 
-            IRepository<Patient> repository = new DapperRepository<Patient>();
-
-            var logic = new Logic.Logic(repository);
+           var logic = kernel.Get<Logic.Logic>();
 
             bool start = true;
 

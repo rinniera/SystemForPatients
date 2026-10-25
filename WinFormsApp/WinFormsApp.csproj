@@ -7,6 +7,10 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Supabase" Version="8.5.0" />
+  </ItemGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Model\Model.csproj" />

@@ -23,9 +23,9 @@ namespace DataAccessLayer
         // <summary>
         // Конструктор репозитория. Создаёт новый контекст БД и получает набор сущностей указанного типа.
         // </summary>
-        public EntityRepository()
+        public EntityRepository(PatientDBContext context)
         {
-            _context = new PatientDBContext();
+            _context = context;
             _dbSet = _context.Set<T>();
         }
 

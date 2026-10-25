@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Supabase" Version="8.5.0" />
+  </ItemGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Model\Model.csproj" />
