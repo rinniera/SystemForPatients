@@ -6,35 +6,39 @@ using Model;
 
 namespace Logic
 {
-    /// <summary>
-    /// Класс бизнес-логики для управления данными пациентов.
-    /// </summary>
+    // <summary>
+    // Класс бизнес-логики для управления данными пациентов.
+    // </summary>
     public class Logic
     {
+        // Зависимости только для чтения
         private readonly IRepository<Patient> _repository;
         private readonly Validator _validator;
 
-        public IRepository<Patient> Repository { get; set; }
-
-        // Конструктор, принимающий абстракцию
-        public Logic(IRepository<Patient> repository)
-        {
-            Repository = repository;
-        }
-        /// <summary>
-        /// Инициализирует новый экземпляр класса бизнес-логики.
-        /// </summary>
+        // <summary>
+        // Инициализирует экземпляр класса бизнес-логики.
+        // </summary>
         /// <param name="repository">Репозиторий для доступа к данным.</param>
         /// <param name="validator">Валидатор для проверки корректности данных.</param>
         public Logic(IRepository<Patient> repository, Validator validator)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _validator = validator ?? throw new ArgumentNullException(nameof(validator));
+            if (repository == null)
+            {
+                throw new ArgumentNullException(nameof(repository));
+            }
+
+            if (validator == null)
+            {
+                throw new ArgumentNullException(nameof(validator));
+            }
+
+            _repository = repository;
+            _validator = validator;
         }
 
-        /// <summary>
-        /// Добавляет нового пациента в базу данных после успешной валидации.
-        /// </summary>
+        // <summary>
+        // Добавляет нового пациента в базу данных после успешной валидации.
+        // </summary>
         /// <param name="patient">Объект пациента.</param>
         public void AddPatient(Patient patient)
         {
@@ -42,29 +46,29 @@ namespace Logic
             _repository.Create(patient);
         }
 
-        /// <summary>
-        /// Возвращает данные о пациенте по его идентификатору.
-        /// </summary>
+        // <summary>
+        // Возвращает данные о пациенте по его идентификатору.
+        // </summary>
         /// <param name="id">Идентификатор пациента.</param>
-        /// <returns>Объект пациента или null, если пациент не найден.</returns>
+        // <returns>Объект пациента или null, если пациент не найден.</returns>
         public Patient GetPatient(int id)
         {
             return _repository.ReadById(id);
         }
 
-        /// <summary>
-        /// Возвращает список всех пациентов.
-        /// </summary>
-        /// <returns>Список объектов пациентов.</returns>
+        // <summary>
+        // Возвращает список всех пациентов.
+        // </summary>
+        // <returns>Список объектов пациентов.</returns>
         public List<Patient> GetAllPatients()
         {
             return _repository.ReadAll().ToList();
         }
 
-        /// <summary>
-        /// Обновляет данные существующего пациента.
-        /// </summary>
-        /// <param name="patient">Объект пациента с обновленными данными.</param>
+        // <summary>
+        // Обновляет данные существующего пациента.
+        // </summary>
+        // <param name="patient">Объект пациента с обновленными данными.</param>
         public void UpdatePatient(Patient patient)
         {
             _validator.Validate(patient);
@@ -75,7 +79,7 @@ namespace Logic
                 throw new ArgumentException($"Пациент с идентификатором {patient.Id} не найден.");
             }
 
-            // Обновляем поля существующей сущности
+            // Обновляет поля существующей сущности
             existing.FirstName = patient.FirstName;
             existing.LastName = patient.LastName;
             existing.Patronymic = patient.Patronymic;
@@ -87,11 +91,11 @@ namespace Logic
             _repository.Update(existing);
         }
 
-        /// <summary>
-        /// Удаляет пациента из базы данных по его идентификатору.
-        /// </summary>
+        // <summary>
+        // Удаляет пациента из базы данных по его идентификатору.
+        // </summary>
         /// <param name="id">Идентификатор пациента.</param>
-        /// <returns>True, если удаление прошло успешно; иначе False.</returns>
+        // <returns>True, если удаление прошло успешно; иначе False.</returns>
         public bool DeletePatient(int id)
         {
             Patient patient = _repository.ReadById(id);
@@ -104,10 +108,10 @@ namespace Logic
             return true;
         }
 
-        /// <summary>
-        /// Группирует пациентов по их диагнозам.
-        /// </summary>
-        /// <returns>Словарь, где ключ - диагноз, а значение - список пациентов.</returns>
+        // <summary>
+        // Группирует пациентов по их диагнозам.
+        // </summary>
+        // <returns>Словарь, где ключ - диагноз, а значение - список пациентов.</returns>
         public Dictionary<string, List<Patient>> GroupByDiagnosis()
         {
             return _repository.ReadAll()
@@ -115,10 +119,10 @@ namespace Logic
                 .ToDictionary(g => g.Key, g => g.ToList());
         }
 
-        /// <summary>
-        /// Подсчитывает количество пациентов в каждом отделении.
-        /// </summary>
-        /// <returns>Словарь, где ключ - название отделения, а значение - количество пациентов.</returns>
+        // <summary>
+        // Подсчитывает количество пациентов в каждом отделении.
+        // </summary>
+        // <returns>Словарь, где ключ - название отделения, а значение - количество пациентов.</returns>
         public Dictionary<string, int> CountPatientsByDepartment()
         {
             return _repository.ReadAll()

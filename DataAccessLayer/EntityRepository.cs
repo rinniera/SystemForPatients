@@ -5,9 +5,8 @@ namespace DataAccessLayer
 {
     // <summary>
     // репозиторий для работы с базой данных через Entity Framework. Реализует базовые CRUD-операции />.
-    /// Использует <see cref="PatientDBContext"/> для доступа к данным.
     // </summary>
-    /// <typeparam name="T">Тип сущности, реализующий <see cref="IDomainObject"/>.</typeparam>
+    // <typeparam name="T">Тип сущности, реализующий <see cref="IDomainObject"/>.</typeparam>
     public class EntityRepository<T> : IRepository<T> where T : class, IDomainObject
     {
         // <summary>
@@ -32,7 +31,7 @@ namespace DataAccessLayer
         // <summary>
         // Возвращает все сущности из базы данных.
         // </summary>
-        /// <returns>Список всех сущностей <typeparamref name="T"/>.</returns>
+        // <returns>Список всех сущностей <typeparamref name="T"/>.</returns>
         public IEnumerable<T> ReadAll()
         {
             return _dbSet.AsNoTracking().ToList();

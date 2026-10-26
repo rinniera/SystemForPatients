@@ -19,6 +19,7 @@ namespace WinFormsApp
             IKernel kernel = new StandardKernel(new SimpleConfigModule());
 
             InitializeComponent();
+
             logic = kernel.Get<Logic.Logic>();
 
             comboBoxGender.Items.Add("Не выбран");
