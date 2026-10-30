@@ -19,7 +19,7 @@ namespace ConsoleApp
                 ctx.Database.EnsureCreated();
             }
 
-           var logic = kernel.Get<Logic.Logic>();
+            var logic = kernel.Get<ILogic>();
 
             bool start = true;
 
@@ -90,7 +90,7 @@ namespace ConsoleApp
             }
         }
 
-        static void AddPatient(Logic.Logic logic)
+        static void AddPatient(ILogic logic)
         {
             Console.WriteLine("Добавить нового пациента: ");
             Console.WriteLine();
@@ -151,7 +151,7 @@ namespace ConsoleApp
                 Console.WriteLine("Ошибка: " + ex.Message);
             }
         }
-        static void ShowAllPatients(Logic.Logic logic)
+        static void ShowAllPatients(ILogic logic)
         {
             Console.WriteLine("Список пациентов: ");
             Console.WriteLine();
@@ -169,7 +169,7 @@ namespace ConsoleApp
                 ShowPatient(patients[i]);
             }
         }
-        static void FindPatient(Logic.Logic logic)
+        static void FindPatient(ILogic logic)
         {
             Console.WriteLine("Поиск пациента в системе:");
             Console.WriteLine();
@@ -198,7 +198,7 @@ namespace ConsoleApp
             ShowPatient(patient);
         }
 
-        static void UpdatePatient(Logic.Logic logic)
+        static void UpdatePatient(ILogic logic)
         {
             Console.WriteLine("Изменение данных о пациенте:");
             Console.WriteLine("Список пациентов:");
@@ -331,7 +331,7 @@ namespace ConsoleApp
             }
         }
 
-        static void DeletePatient(Logic.Logic logic)
+        static void DeletePatient(ILogic logic)
         {
 
             Console.WriteLine("Удаление пациента из системы:");
@@ -393,7 +393,7 @@ namespace ConsoleApp
                 Console.WriteLine("Удаление отменено.");
             }
         }
-        static void GroupPatientsByDiagnosis(Logic.Logic logic)
+        static void GroupPatientsByDiagnosis(ILogic logic)
         {
             Console.WriteLine("Количество пациентов с диагнозами:");
             Console.WriteLine();
@@ -418,7 +418,7 @@ namespace ConsoleApp
                 Console.WriteLine();
             }
         }
-        static void CountPatientsByDepartment(Logic.Logic logic)
+        static void CountPatientsByDepartment(ILogic logic)
         {
             Console.WriteLine("Количество пациентов в отделениях:");
             Console.WriteLine();

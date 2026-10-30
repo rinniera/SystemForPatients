@@ -9,7 +9,7 @@ namespace Logic
     // <summary>
     // Класс бизнес-логики для управления данными пациентов.
     // </summary>
-    public class Logic
+    public class Logic: ILogic
     {
         // Зависимости только для чтения
         private readonly IRepository<Patient> _repository;

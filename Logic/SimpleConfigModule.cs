@@ -46,6 +46,8 @@ namespace Logic
             Bind<Validator>().ToSelf();
 
             Bind<IBusinessLogic>().To<BusinessLogic>();
+
+            Bind<ILogic>().To<Logic>().InSingletonScope();
         }
     }
 }

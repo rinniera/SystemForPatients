@@ -10,8 +10,8 @@ namespace WinFormsApp
 {
     public partial class Form1 : Form
     {
-        private readonly IRepository<Patient> repository;
-        private readonly Logic.Logic logic;
+       
+        private readonly ILogic logic;
 
 
         public Form1()
@@ -20,7 +20,7 @@ namespace WinFormsApp
 
             InitializeComponent();
 
-            logic = kernel.Get<Logic.Logic>();
+            logic = kernel.Get<ILogic>();
 
             comboBoxGender.Items.Add("Не выбран");
             comboBoxGender.Items.Add("Мужской");
