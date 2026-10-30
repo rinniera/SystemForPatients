@@ -16,7 +16,6 @@ namespace Logic
         // </summary>
         public override void Load()
         {
-            // строка подключения
             string connectionString = "Host=aws-0-eu-west-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.sxiucvcwrwgbdzrhpoya;Password=19Brick286GG;SSL Mode=Require;Trust Server Certificate=true;";
 
             // настройки для контекста базы данных, передаётся строка подключения и указывается провайдер PostgreSQL.
@@ -25,7 +24,7 @@ namespace Logic
                 .Options;
 
             // контекст базы данных(PatientDBContext).
-            // SingletonScope - чтобы в рамках приложения существовал только один экземпляр контекста.
+            // SingletonScope, чтобы в рамках приложения существовал только один экземпляр контекста.
             // Принудительно передаём ему объект dbContextOptions через конструктор.
             Bind<PatientDBContext>()
                 .ToSelf()
@@ -37,9 +36,7 @@ namespace Logic
             //  .InSingletonScope();
 
             // связываем интерфейс IRepository<Patient> и класс DapperRepository<Patient>.
-            // Внедряем строку подключения напрямую в конструктор репозитория.
-            // Благодаря этому бизнес-логика (класс Logic) будет работать именно через Dapper.
-
+            // Внедряем строку подключения напрямую в конструктор репозитория, так логика будет работать через Dapper.
             Bind<IRepository<Patient>>()
                .To<DapperRepository<Patient>>()
                .InSingletonScope()
@@ -47,6 +44,8 @@ namespace Logic
 
             // Ninject будет автоматически создавать его экземпляр 
             Bind<Validator>().ToSelf();
+
+            Bind<IBusinessLogic>().To<BusinessLogic>();
         }
     }
 }

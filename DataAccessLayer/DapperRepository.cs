@@ -13,7 +13,7 @@ namespace DataAccessLayer
     /// <typeparam name="T">Тип сущности, с которой работает репозиторий.</typeparam>
     public class DapperRepository<T> : IRepository<T> where T : IDomainObject
     {
-        // Строка подключения к базе данных. Передается извне через конструктор (Dependency Injection).
+        // Строка подключения к базе данных.
         private readonly string _connectionString;
 
         // Имя таблицы в базе данных, сформированное на основе имени типа T.

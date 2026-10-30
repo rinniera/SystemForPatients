@@ -14,13 +14,14 @@ namespace Logic
         // Зависимости только для чтения
         private readonly IRepository<Patient> _repository;
         private readonly Validator _validator;
+        private readonly IBusinessLogic _businessLogic;
 
         // <summary>
         // Инициализирует экземпляр класса бизнес-логики.
         // </summary>
         /// <param name="repository">Репозиторий для доступа к данным.</param>
         /// <param name="validator">Валидатор для проверки корректности данных.</param>
-        public Logic(IRepository<Patient> repository, Validator validator)
+        public Logic(IRepository<Patient> repository, Validator validator, IBusinessLogic businessLogic)
         {
             if (repository == null)
             {
@@ -32,8 +33,14 @@ namespace Logic
                 throw new ArgumentNullException(nameof(validator));
             }
 
+            if (businessLogic == null)
+            {
+                throw new ArgumentNullException(nameof(businessLogic));
+            }
+
             _repository = repository;
             _validator = validator;
+            _businessLogic = businessLogic;
         }
 
         // <summary>
@@ -108,26 +115,24 @@ namespace Logic
             return true;
         }
 
-        // <summary>
-        // Группирует пациентов по их диагнозам.
-        // </summary>
-        // <returns>Словарь, где ключ - диагноз, а значение - список пациентов.</returns>
+        /// <summary>
+        /// Группирует пациентов по их диагнозам.
+        /// </summary>
+        /// <returns>Словарь, где ключ - диагноз, а значение - список пациентов.</returns>
         public Dictionary<string, List<Patient>> GroupByDiagnosis()
         {
-            return _repository.ReadAll()
-                .GroupBy(p => p.Diagnosis)
-                .ToDictionary(g => g.Key, g => g.ToList());
+            // Просто перенаправляем вызов в BusinessLogic
+            return _businessLogic.GroupByDiagnosis();
         }
 
-        // <summary>
-        // Подсчитывает количество пациентов в каждом отделении.
-        // </summary>
-        // <returns>Словарь, где ключ - название отделения, а значение - количество пациентов.</returns>
+        /// <summary>
+        /// Подсчитывает количество пациентов в каждом отделении.
+        /// </summary>
+        /// <returns>Словарь, где ключ - название отделения, а значение - количество пациентов.</returns>
         public Dictionary<string, int> CountPatientsByDepartment()
         {
-            return _repository.ReadAll()
-                .GroupBy(p => p.Department)
-                .ToDictionary(g => g.Key, g => g.Count());
+            // Просто перенаправляем вызов в BusinessLogic
+            return _businessLogic.CountPatientsByDepartment();
         }
     }
 }
